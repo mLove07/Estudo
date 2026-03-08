@@ -1,18 +1,35 @@
-name: Validar Estrutura
+name: Validar Pull Request
 
 on:
-  push:
-    branches: [main]
+  pull_request:
+    branches: [main] # Executa apenas em PRs destinados à main
 
 jobs:
-  build:
+  validacao:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
-      
-      - name: Listar arquivos na raiz
-        run: ls -R
-        
-      - name: Confirmar que o projeto foi carregado
-        run: echo "O projeto foi carregado com sucesso no GitHub Actions!"
+
+      - name: Verificar estrutura de arquivos
+        run: |
+          echo "Verificando se arquivos essenciais existem..."
+          ls -la
+          # Exemplo: Falha se não existir um README
+          test -f README.md || (echo "ERRO: README.md obrigatório!" && exit 1)
+
+      - name: Validar sintaxe Shell Script (opcional)
+        # Se você tiver arquivos .sh, isso verifica se há erros neles
+        run: |
+          if ls *.sh 1> /dev/null 2>&1; then
+            shellcheck *.sh
+          else
+            echo "Nenhum script shell para validar."
+          fi
+
+      - name: Simular Testes de Unidade
+        run: |
+          echo "Executando suite de testes..."
+          # Aqui você colocaria seu comando real de teste (ex: pytest, go test, etc)
+          sleep 5
+          echo "Todos os testes passaram!"
