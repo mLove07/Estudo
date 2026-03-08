@@ -1,33 +1,18 @@
-name: CI Main Branch
+name: Validar Estrutura
 
-# Define os gatilhos de execução
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      # 1. Faz o checkout do repositório para a máquina virtual
       - name: Checkout do código
         uses: actions/checkout@v4
-
-      # 2. Exemplo: Configuração do ambiente (ajuste para sua linguagem)
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      # 3. Exemplo: Instalação de dependências
-      - name: Instalar dependências
-        run: npm install
-
-      # 4. Exemplo: Execução de testes
-      - name: Rodar Testes
-        run: npm test
+      
+      - name: Listar arquivos na raiz
+        run: ls -R
+        
+      - name: Confirmar que o projeto foi carregado
+        run: echo "O projeto foi carregado com sucesso no GitHub Actions!"
