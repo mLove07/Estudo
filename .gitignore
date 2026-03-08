@@ -1,0 +1,18 @@
+# Pastas de dependências
+node_modules/
+venv/
+env/
+__pycache__/
+
+# Arquivos de sistema e ambiente
+.env
+.DS_Store
+*.log
+
+# Pastas de build/execução
+dist/
+build/
+
+# Ocultar a pasta da IDE
+.vscode/
+.idea/
