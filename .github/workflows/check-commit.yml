@@ -1,0 +1,33 @@
+name: Validar Mensagem de Commit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Necessário para ler o histórico de commits
+
+      - name: Validar tamanho da mensagem
+        run: |
+          # Pega a mensagem do último commit
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "Mensagem detectada: $COMMIT_MSG"
+          
+          # Conta os caracteres
+          MSG_LENGTH=${#COMMIT_MSG}
+          
+          if [ "$MSG_LENGTH" -lt 10 ]; then
+            echo "ERRO: Mensagem de commit muito curta ($MSG_LENGTH caracteres)."
+            echo "Por favor, descreva melhor o que foi feito (mínimo 10 caracteres)."
+            exit 1
+          else
+            echo "Sucesso: Mensagem validada!"
+          fi
